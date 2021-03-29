@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+class Readingcsv{
+    
+    public static void Main(){
+        string filePath = @"C:\Users\osman\Desktop\FearStudyData.csv";
+        int i = 0;
+        int j;
+        int a = 0;
+        int success=0;
+        StreamReader reader = null;
+        
+        reader = new StreamReader(File.OpenRead(filePath));
+        var Fear = new List<string>();
+        var Greatest = new List<string>();
+        var Impact = new List<string>();
+        var Past = new List<string>();
+        var Encounter = new List<string>();
+        var Overcome = new List<string>();
+        var Embarrassed = new List<string>();
+
+        while (!reader.EndOfStream){
+
+             var line = reader.ReadLine();
+             var values = line.Split(',');
+
+             Fear.Add(values[i+0]);
+             Greatest.Add(values[i + 1]);
+             Impact.Add(values[i + 2]);
+             Past.Add(values[i + 3]);
+             Encounter.Add(values[i + 4]);
+             Overcome.Add(values[i + 5]);
+             Embarrassed.Add(values[i + 6]);
+            
+        }
+        
+        var unique_items = new HashSet<string>(Fear);
+        Console.WriteLine("Here the types of fears you can investigate");
+        foreach (string s in unique_items)
+            Console.WriteLine(s);
+        
+        Console.WriteLine("Please enter a Fear type you want to research ");
+        string fear_type = Console.ReadLine();
+        Console.WriteLine("Your selected fear type is: " + fear_type);
+        for (j = 0; j < 80; ++j)
+        {
+            
+            if (fear_type == Fear[j])
+            {
+                i += 1;
+                if ("No" == Overcome[j])
+                {
+                    a += 1;
+                }
+
+                success = ((i - a) / i) * 100;
+            }
+        }
+        Console.WriteLine("Number of people having fear of "+ fear_type + " is " + i );
+        Console.WriteLine("Success of overcoming " + fear_type + " fear is %" + success );
+    }
+}
