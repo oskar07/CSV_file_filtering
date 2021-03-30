@@ -8,8 +8,9 @@ class Readingcsv{
         string filePath = @"C:\Users\osman\Desktop\FearStudyData.csv";
         int i = 0;
         int j;
-        int a = 0;
-        int success=0;
+        double a = 0, b = 0;
+        double success = 0;
+        double success1=0;
         StreamReader reader = null;
         
         reader = new StreamReader(File.OpenRead(filePath));
@@ -20,7 +21,8 @@ class Readingcsv{
         var Encounter = new List<string>();
         var Overcome = new List<string>();
         var Embarrassed = new List<string>();
-
+        string fear_type1 = null;
+        
         while (!reader.EndOfStream){
 
              var line = reader.ReadLine();
@@ -44,21 +46,51 @@ class Readingcsv{
         Console.WriteLine("Please enter a Fear type you want to research ");
         string fear_type = Console.ReadLine();
         Console.WriteLine("Your selected fear type is: " + fear_type);
+        if (fear_type == "Other")
+        {
+            var unique_items1 = new HashSet<string>(Greatest);
+            Console.WriteLine("Here more types of fears you can investigate");
+            foreach (string s in unique_items1)
+                Console.WriteLine(s);
+            
+            Console.WriteLine("Please enter a Fear type you want to research ");
+            fear_type1 = Console.ReadLine();
+            Console.WriteLine("Your selected fear type is: " + fear_type1);
+        }
         for (j = 0; j < 80; ++j)
         {
             
-            if (fear_type == Fear[j])
+            if (fear_type == Fear[j] & fear_type != "Other")
             {
-                i += 1;
+                b += 1;
                 if ("No" == Overcome[j])
                 {
                     a += 1;
                 }
 
-                success = ((i - a) / i) * 100;
+                success = ((b - a) / b) * 100;
+            }
+            else if ( fear_type1 == Greatest[j] & fear_type == "Other")
+            {
+                b += 1;
+                if ("No" == Overcome[j])
+                {
+                    a += 1;
+                }
+
+                success1 = ((b - a) / b) * 100;
             }
         }
-        Console.WriteLine("Number of people having fear of "+ fear_type + " is " + i );
-        Console.WriteLine("Success of overcoming " + fear_type + " fear is %" + success );
+        
+        if (fear_type != "Other")
+        {
+            Console.WriteLine("Number of people having fear of " + fear_type + " is " + b);
+            Console.WriteLine("Success of overcoming " + fear_type + " fear is %" + success);
+        }
+        else if (fear_type == "Other")
+        {
+            Console.WriteLine("Number of people having fear of " + fear_type1 + " is " + b);
+            Console.WriteLine("Success of overcoming " + fear_type1 + " fear is %" + success1);
+        }
     }
 }
